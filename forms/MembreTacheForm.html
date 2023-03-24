@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="libs/materialize.min.css" />
+  </head>
+  <body>
+
+<div class="container">
+    <div class="section">
+    <div class="row">
+      <div class="col s12">
+        <h5>Modifier une tâche</h5>
+      </div>
+    </div>
+    <div class="row">
+      <form class="col s12">
+        <input type="hidden" name="Id" id="Id" value="">
+        <div class="row">
+
+          <div class="input-field col s12">
+            <input id="Tache" type="text" class="validate" >
+            <label for="Tache">Tâche</label>
+          </div>
+          <div class="input-field col s6">
+            <select id="Etat" name="Etat">
+              <option value="A faire">A faire</option>
+              <option value="En cours">En cours</option>
+              <option value="En validation">En validation</option>
+              <option value="En confirmation">En confirmation</option>
+              <option value="En pause">En pause</option>
+              <option value="Terminée">Terminée</option>
+            </select>
+            <label for="Etat">Etat</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="ProjetToString" type="text" disabled class="validate" >
+            <label for="ProjetToString">Projet</label>
+          </div>
+
+          PhaseToString
+          IdMembre
+          References
+          Remarques
+          <div class="input-field col s12">
+            <select id="IdQuestion" name="IdQuestion">
+              <option value="1">Question 1</option>
+              <option selected value="2">Question 2</option>
+            </select>
+            <label for="Etat">Question</label>
+          </div>
+
+          <div class="input-field col s12">
+            <input id="Remarque" type="text" class="validate">
+            <label for="Remarque">Remarque</label>
+          </div>
+
+
+          <div class="input-field col s12">
+            <input id="Livrable" type="text" class="validate">
+            <label for="Livrable">Livrable</label>
+          </div>
+
+          
+        </div>
+        
+      </form>
+    </div>  
+        <div class="row">
+              <div class="col s12">
+                  <button class="btn waves-effect waves-light" onclick="save()"  name="action">Enregistrer
+                      <i class="material-icons right">send</i>
+                  </button>
+              </div>
+        </div> 
+    </div>
+</div>
+
+<script src="libs/jquery-3.2.1.js" ></script>
+<script src="libs/materialize.min.js" ></script>
+
+<script>
+
+  $(document).ready(function () {
+
+    $('select').formSelect();
+
+    let data = {
+      Id : 1,
+      ProjetToString: "Gestion des briefs projet",
+      IdQuestion: 2,
+      PhaseToString: "Empathie",
+      IdMembre: 3,
+      Tache: "Empathie avec Mr Madani Ali",
+      References: "https://www.google.com/",
+      Remarques: "Il faut voir avec madame fatima",
+      RemarquesChefProjet: "Vous avez oublier la date de fin",
+      Livrable: "https://github.com/",
+      Etat: "En cours",
+      DateDebut: "24/03/2023",
+      DateFin: "24/03/2023",
+    }
+
+    let entity =  JSON.parse(JSON.stringify(data));
+    // console.log(entity);
+    let values = Object.entries(entity).forEach(value => {
+      $("#" + value[0]).val( value[1]);
+    });
+
+    $('select').formSelect();
+    
+    // $("#DateNaissance").val(new Date(entity.DateNaissance).toLocaleDateString('fr-FR'));
+    M.updateTextFields();
+  });
+
+  function save()
+  { 
+    let entity = {};
+    entity.Id =  parseInt ($("#Id").val())
+    entity.Remarque = $("#Remarque").val();
+    entity.Livrable = $("#Livrable").val();
+    entity.Etat = $("#Etat").val();
+   
+
+
+    // entity.DateNaissance = new Date( $("#DateNaissance").val());
+    console.log(entity);
+    // google.script.run.SaveEntityRowGmView(entity)
+    // google.script.host.close();
+}
+</script>
+</body>
+</html>
