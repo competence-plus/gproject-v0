@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body>
+
+<div class="container">
+    <ul class="collapsible" data-collapsible="accordion">
+        <li>
+           <div class="collapsible-header"><i class="material-icons">filter_drama</i>Gestions</div>
+              <div class="collapsible-body">
+
+                <ul>
+                    <li> <a onclick="google.script.run.InitViewManager('Ville')"> Gestion des villes </a> </li>
+                    <li> <a onclick="google.script.run.InitViewManager('Membre')"> Gestion des apprenants </a> </li>
+                <ul/>
+            
+            </div>
+        </li>
+        <li>
+           <div class="collapsible-header"><i class="material-icons">place</i>Paramètres</div>
+              <div class="collapsible-body"><p>This is second section.</p></div>
+        </li>
+     </ul>
+</div>
+
+
+   
+            
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>  -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/js/materialize.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+
+<script>if (!window.jQuery) { document.write('<script src="bin/jquery-3.2.1.min.js"><\/script>'); }</script>
+<script>
+function Save()
+{
+  // if add 
+  // var first_name = document.getElementById("first_name").value;
+  // var last_name = document.getElementById("first_name").value;
+  // google.script.run.AddRecord(first_name,last_name);
+}
+</script>
+  </body>
+</html>

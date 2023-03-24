@@ -1,0 +1,18 @@
+{
+  "timeZone": "Africa/Casablanca",
+  "dependencies": {
+    "libraries": [{
+      "userSymbol": "Tamotsu",
+      "libraryId": "1OiJIgWlrg_DFHFYX_SoaEzhFJPCmwbbfEHEqYEfLEEhKRloTNVJ-3U4s",
+      "version": "32"
+    }]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "sheets": {
+    "macros": [{
+      "menuName": "testmacro3",
+      "functionName": "testmacro3"
+    }]
+  }
+}

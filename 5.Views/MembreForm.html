@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <?!= include('materialize.min.css'); ?>
+  </head>
+  <body>
+
+<div class="container">
+    <div class="section">
+        <h5>Modifier un membre</h5>
+        <div class="row">
+          <div class="row">
+            <form class="col s12">
+              <input type="hidden" name="Id" id="Id" value="">
+              <div class="row">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="Nom" type="text" class="validate">
+                  <label for="Nom">Nom</label>
+                </div>
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="Prenom" type="text" class="validate">
+                  <label for="Prenom">Prénom</label>
+                </div>
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="DateNaissance" type="text" class="validate">
+                  <label for="DateNaissance">Date de Naissance</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>  
+        <div class="row">
+              <div class="col s12">
+                  <button class="btn waves-effect waves-light" onclick="save()"  name="action">Enregistrer
+                      <i class="material-icons right">send</i>
+                  </button>
+              </div>
+        </div> 
+    </div>
+</div>
+     
+<?!= include('jquery-3.2.1'); ?>
+<?!= include('materialize.min.js'); ?>
+
+<script>
+
+  $(document).ready(function () {
+    let entity =  JSON.parse("<?= jsonEntity ?>");
+    console.log("Form : " + entity);
+    $("#Id").val( entity.Id);
+    $("#Nom").val(entity.Nom);
+    $("#Prenom").val(entity.Prenom);
+    // $("#DateNaissance").val(new Date(entity.DateNaissance).toLocaleDateString('fr-FR'));
+    M.updateTextFields();
+  });
+
+  function save()
+  { 
+    let entity = {};
+    entity.Id =  parseInt ($("#Id").val())
+    entity.Nom = $("#Nom").val();
+    entity.Prenom = $("#Prenom").val();
+    // entity.DateNaissance = new Date( $("#DateNaissance").val());
+    console.log(entity);
+    google.script.run.SaveEntityRowGmView(entity)
+    google.script.host.close();
+}
+</script>
+</body>
+</html>

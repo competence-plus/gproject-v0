@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <?!= include('materialize.min.css'); ?>
+  </head>
+  <body>
+
+
+
+<div class="container">
+    <div class="section">
+        <h5>Modifier un membre</h5>
+        <div class="row">
+          <div class="row">
+            <form class="col s12">
+              <input type="hidden" name="Id" id="Id" value="">
+              <div class="row">
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="Remarque" type="text" class="validate">
+                  <label for="Remarque">Remarque</label>
+                </div>
+                <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                  <input id="Livrable" type="text" class="validate">
+                  <label for="Livrable">Livrable</label>
+                </div>
+                 <div class="input-field col s12">
+                  <i class="material-icons prefix">account_circle</i>
+                 
+
+                  <select id="Etat" name="Etat">
+                    <option value="A faire">A faire</option>
+                    <option value="En cours">En cours</option>
+                    <option value="En validation">En validation</option>
+                    <option value="En confirmation">En confirmation</option>
+                    <option value="En pause">En pause</option>
+                    <option value="Terminée">Terminée</option>
+                  </select>
+
+
+                  <label for="Etat">Etat</label>
+
+
+
+
+                 
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>  
+        <div class="row">
+              <div class="col s12">
+                  <button class="btn waves-effect waves-light" onclick="save()"  name="action">Enregistrer
+                      <i class="material-icons right">send</i>
+                  </button>
+              </div>
+        </div> 
+    </div>
+</div>
+     
+<?!= include('jquery-3.2.1'); ?>
+<?!= include('materialize.min.js'); ?>
+
+<script>
+
+  $(document).ready(function () {
+
+    $('select').formSelect();
+
+
+    let entity =  JSON.parse("<?= jsonEntity ?>");
+    console.log("Form : " + entity);
+    $("#Id").val( entity.Id);
+    $("#Remarque").val(entity.Remarque);
+    $("#Livrable").val(entity.Livrable);
+    $("#Etat").val(entity.Etat);
+    $('select').formSelect();
+    
+    // $("#DateNaissance").val(new Date(entity.DateNaissance).toLocaleDateString('fr-FR'));
+    M.updateTextFields();
+  });
+
+  function save()
+  { 
+    let entity = {};
+    entity.Id =  parseInt ($("#Id").val())
+    entity.Remarque = $("#Remarque").val();
+    entity.Livrable = $("#Livrable").val();
+    entity.Etat = $("#Etat").val();
+   
+
+
+    // entity.DateNaissance = new Date( $("#DateNaissance").val());
+    console.log(entity);
+    google.script.run.SaveEntityRowGmView(entity)
+    google.script.host.close();
+}
+</script>
+</body>
+</html>
