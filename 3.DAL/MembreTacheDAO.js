@@ -5,7 +5,17 @@ class MembresTachesDAO extends BaseDAO{
     this.sheetName = "MembresTachesTable";
     this.initTamotsu();
     this.Entity = MembreTache;
-    this.toStringColumnsNames = ["TacheToString","TacheToString","MembreToString","PhaseToString","ProjetToString"];
+    this.toStringColumnsNames = ["MembreToString","QuestionToString","PhaseToString","ProjetToString","ToString"];
   }
+
+  findAllByIdProjet(idProjet){
+    var data;
+    let rowsObjects = this.table.where({IdProjet: idProjet}).all();
+    data = rowsObjects.map( rowObject => {
+       return new this.Entity(rowObject)
+    })
+    return data;
+  }
+
 
 }

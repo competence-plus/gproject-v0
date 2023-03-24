@@ -1,7 +1,8 @@
-
  function debug(){
-  //  InitViewManager("MembreTache")
-   SaveEntityRowGmView({Id:57,Etat:"En validation2"})
+  //  CreateGmInstance("Membre",undefined)
+   RefreshDataGmView();
+  //  CreateGmInstance("MembreTache",2)
+  //  SaveEntityRowGmView({Id:57,Etat:"En validation2"})
  }
 // function test(){
 
@@ -58,16 +59,68 @@ function onOpen(){
   createMenu();
 }
 
-function createMenu(){
- SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
-      .createMenu('Gestion de projet')
-      .addItem('Gestion des membres', 'gestionMembresMenuItem')
-      .addItem('Réalisation des tâches', 'realisationTacheMenuItem')
-      // .addItem('Gestion des villes', 'gestionVillesMenuItem')
-      .addItem('Admin', 'showSidebar')
-      .addToUi();
+/**
+ * Création de menu de l'application
+ */
+
+// Création des function dynamique pour la création de menu
+for (var projet of new ProjetsBL().findAll() ) {
+  let idProjet = projet.Id ;
+
+  // Add dynamic function for : Gestion des tâches
+  this["afficheGestionTacheDeProjet" + idProjet] = function() {   afficheGestionTaches(idProjet); };
+  this["afficheGestionQuestionDeProjet" + idProjet] = function() {   afficheGestionQuestions(idProjet); };
 
 }
+
+function afficheGestionTaches(idProjet) {
+  CreateGmInstance("MembreTache",idProjet)
+}
+function afficheGestionQuestions(idProjet) {
+  CreateGmInstance("Question",idProjet)
+}
+function afficheGestionQuestions(idProjet) {
+  CreateGmInstance("Membre",undefined)
+}
+function afficheGestionMembres() {
+  CreateGmInstance("Membre",undefined)
+}
+
+function createMenu(){
+  let ui = SpreadsheetApp.getUi();
+  let menu = ui.createMenu('Gestion de projet');
+
+
+  menu.addItem('Gestion des membres', 'afficheGestionMembres');
+  menu.addItem('Gestion des projets', 'gestionMembresMenuItem');
+  menu.addSeparator();
+
+  // Afficher les sous menu pour chaque projet
+  let projets = new ProjetsBL().findAll();
+  projets.forEach( projet => {
+
+    // Sous menu du projet 
+    let subMenu = ui.createMenu(projet.Nom);
+    subMenu.addItem('Gestion des Tâches', 'afficheGestionTacheDeProjet' + projet.Id)
+    subMenu.addItem('Gestion des Questions', 'afficheGestionQuestionDeProjet' + projet.Id)
+    menu.addSubMenu(subMenu);
+        
+   
+
+  } );
+
+
+  menu.addSeparator();
+  menu.addItem('Admin', 'showSidebar');
+  menu.addToUi();
+
+}
+
+
+
+
+
+
 
 function showSidebar() {
   var html = HtmlService.createHtmlOutputFromFile('menuPrincipale')
@@ -78,9 +131,7 @@ function showSidebar() {
 function gestionMembresMenuItem(){
   InitViewManager("Membre")
 }
-function realisationTacheMenuItem(){
-  InitViewManager("MembreTache")
-}
+
 
  
 

@@ -7,86 +7,130 @@ class GmBaseInstance {
    
     this.spreadSheet = SpreadsheetApp.getActive();
     this.entityName = undefined;
-    this.sheetName = "Gestionnaire";
-    this.sheet = this.spreadSheet.getSheetByName("Gestionnaire");
+    this.sheetName = undefined;
+    this.gestionnaireSheetName = "Gestionnaire"
+    this.sheet = undefined;
     this.tableName = "";
     this.Bl = undefined;
     this.titre = ""
     this.columnsNames = undefined;
     this.columnsTitles = undefined;
     this.entityForm = undefined;
-    
+
+    // Ranges
+    this.entityNameRange = undefined;
+    this.idNameColonneRange =  undefined;
+    this.checkBoxIdsRange =undefined;
+    this.titreGestionnaireRange = undefined;
+    this.idEntityFilter1Range = undefined;
+
   }
 
-  /*
-    Intialisation de l'interface
-  */
-  initManager(){
-
-    // Titre
-    let titreRange =  this.spreadSheet.getRangeByName("TitreGestionnaire");
-    titreRange.setValue(this.titre);
-
-    // Clear Data
-    this.clearData();
-
-    // Coloones
-    this.initColonnes();
-
-    // afficher les données
-    this.refreshData();
-
-   
-    this.showMenuSidebar();
+  reload(){
+      
+      let titreRange =  this.titreGestionnaireRange;
+      titreRange.setValue(this.titre);
+      this.clearData();
+      this.initColonnes();
+      this.refreshData();
+      this.showMenuSidebar();
   }
 
-  showMenuSidebar(){
-        var html = HtmlService.createHtmlOutputFromFile('menuGestionVilles.html')
-      .setTitle('Gestion des villes');
-      SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
-      .showSidebar(html);
+  /**
+   * Intialisation de l'interface
+   * - Création des colonnes
+   * - Insertion des données
+   * - Afficher le menu Sidebar
+   * @return sheet instance
+   */
+  initSheet(){
+    let isInit = false;
+    this.sheet =  SpreadsheetApp.getActive().getSheetByName(this.sheetName);
+    if(!this.sheet){
+      isInit = true;
+      this.sheet = this.createSheetIfNotExist();
+    }
+
+    // Init Range
+    this.entityNameRange = this.sheet.getRange(1,2);
+    this.idNameColonneRange =  this.sheet.getRange(6,2);
+    this.checkBoxIdsRange = this.sheet.getRange("A:B")
+    this.titreGestionnaireRange = this.sheet.getRange("C2");
+    this.idEntityFilter1Range = this.sheet.getRange(2,2);
+
+    if(isInit) this.reload();
+
+    // edit EntityNameRange
+    this.entityNameRange.setValue(this.entityName);
+
+  }
+
+  activate(){
+    this.sheet.activate();
+  }
+  /**
+   * Création de feuille de gestion s'il n'existe pas
+   * @return the created sheet
+   */
+  createSheetIfNotExist(){
+
+
+    let ss = SpreadsheetApp.getActive();
+
+
+    // Create SheetManager Instance
+    this.sheet =  ss.getSheetByName(this.sheetName);
+    if (!this.sheet) {
+
+      var gestionnaireSheet = ss.getSheetByName(this.gestionnaireSheetName);
+      gestionnaireSheet.copyTo(ss).setName(this.sheetName);
+      this.sheet = ss.getSheetByName(this.sheetName);
+
+      // entityNameRange
+    }
+    this.sheet.activate();
+
+
+    return this.sheet;
+
   }
 
   clearData(){
-    let idNameColonneRange =  this.spreadSheet.getRangeByName("IdNameColonnGestionnaire");
-    let idrow = idNameColonneRange.getRow();
-    let idcolumns = idNameColonneRange.getColumn();
+    let idrow = this.idNameColonneRange.getRow();
+    let idcolumns = this.idNameColonneRange.getColumn();
     let numRow = this.sheet.getLastRow() -idrow;
     let numColumn = 20;
     let rangeDataWithColumns = this.sheet.getRange(idrow,idcolumns,numRow,numColumn );
     rangeDataWithColumns.clearContent();
   }
 
-  /*
+ /*
     Initialisation des clonnes
   */ 
   initColonnes(){
     let columnsNumber = this.columnsNames.length;
-    let idNameColonneRange =  this.spreadSheet.getRangeByName("IdNameColonnGestionnaire");
+    let idNameColonneRange =  this.sheet.getRange(6,2);
     let columnsNamesRange = this.sheet.getRange(idNameColonneRange.getRow(),idNameColonneRange.getColumn(),1,columnsNumber);
     
     if(this.columnsTitles) columnsNamesRange.setValues([this.columnsTitles]);
     else columnsNamesRange.setValues([this.columnsNames]);
   }
 
+
+  refreshData(){
+    let data = this.Bl.findAll();
+    this.showData(data);
+  }
+
+
+
 /**
  * Afficher un tableau des valeurs dans l'interface
  * @param values un tableau des valeurs à afficher.
  */
-  afficherValues(values){
-    let idNameColonneRange =  this.spreadSheet.getRangeByName("IdNameColonnGestionnaire");
-    let numRow = values.length;
-    let numColumns = this.columnsNames.length;
-    let idrow = idNameColonneRange.getRow();
-    let idcolumns = idNameColonneRange.getColumn();
-    let rangeData = this.sheet.getRange(idrow+1,idcolumns,numRow,numColumns );
-    rangeData.setValues(values)
-  }
- 
-  refreshData(){
-    let data = this.Bl.findAll(this.columnsNames);
+  showData(data){
 
-    // Convert an Array of Objects to an Array of Values with columnsNames order
+     // Convert an Array of Objects to an Array of Values with columnsNames order
     const values = data.map(object => {
         let arrayKeyValue = Object.entries(object);
         let lineValue = [];
@@ -105,30 +149,43 @@ class GmBaseInstance {
         // arrayKeyValue.forEach(keyValue =>  lineValue.push(keyValue[1])) ;
         return lineValue;
     });
-    // console.log(values);
-    this.afficherValues(values);
 
+
+
+    let numRow = values.length;
+    let numColumns = this.columnsNames.length;
+    let idrow = this.idNameColonneRange.getRow();
+    let idcolumns = this.idNameColonneRange.getColumn();
+    let rangeData = this.sheet.getRange(idrow+1,idcolumns,numRow,numColumns );
+    rangeData.setValues(values)
   }
+ 
 
   
+  showMenuSidebar(){
+        var html = HtmlService.createHtmlOutputFromFile('5.Views/menuGestionVilles.html')
+      .setTitle('Gestion des villes');
+      SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
+      .showSidebar(html);
+  }
+
+
   /**
    * Trouver les Ids des lignes selectionnées 
    * @return {selectedIds} un tableau des ligne selectionnée
    */
   getSelectedIds(){
     // find selected Id 
-    let selectedIds = this.spreadSheet
-                          .getRangeByName("CheckBoxIdsColonnesGestionnaire")
+    let selectedIds = this.sheet.getRange("A:B")
                           .getValues()
                           .filter(v=> (v[0] == true))
                           .map(v=>v[1]);
     return selectedIds;
 
   }
-  clearSelectedIds(){
-    let checkBoxIdsRange = this.spreadSheet.getRangeByName("CheckBoxIdsColonnesGestionnaire");
 
-    let checkBoxRange = this.sheet.getRange(checkBoxIdsRange.getRow(),checkBoxIdsRange.getColumn(),checkBoxIdsRange.getNumRows());
+  clearSelectedIds(){
+    let checkBoxRange = this.sheet.getRange(this.checkBoxIdsRange.getRow(),this.checkBoxIdsRange.getColumn(),this.checkBoxIdsRange.getNumRows());
     checkBoxRange.clearContent();
   }
 

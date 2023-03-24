@@ -6,8 +6,13 @@
 
 
 function testGmView(){
+  // RefreshDataGmView();
+  AddGmView()
+  // GetActiveGmInstance();
+  // InitViewManager("MembreTache", 1)
 
-  SaveEntityRowGmView({Id:8,Nom:"madani8"})
+
+  // SaveEntityRowGmView({Id:8,Nom:"madani8"})
   // editGmView()
   // let data  = getCreateOrEditEntityGmView()
   // // InitViewManager("Membre")
@@ -16,59 +21,64 @@ function testGmView(){
 }
 
 
+/**
+ * Création de gestionnaire : duplication de gestionnaire généric
+ * @param entityName Le nom de l'entité à génrer
+ * @param idProjet Id du projet à génrer
+ */
+function CreateGmInstance(entityName, filterId1){
 
-// Méthodes
+  if (!entityName) throw new Error("Vous ne pouvez pas créer un gestionnaire dans déterminer le nom de l'entité");
+  
 
-function setCurrentManager(value){
-      SpreadsheetApp.getActive().getRangeByName("currentManagerReference").setValue(value);
+  let gmInstance = undefined;
+
+  switch(entityName){
+    case "MembreTache" : gmInstance = new GmMembresTachesInstance(filterId1); break;
+    case "Membre" : gmInstance = new GmMembresInstance(); break;
+  }
+  gmInstance.activate();
+  return gmInstance;
+
 }
 
-function getCurrentManager(){
-    return SpreadsheetApp.getActive().getRangeByName("currentManagerReference").getValue();
-}
 
-function GetGmInstance(){
-    let gmInstance = undefined;
-    let referenceManager = getCurrentManager();
-    switch(referenceManager){
-      case "MembreTache" : gmInstance = new GmMembresTachesInstance(); break;
-      case "Membre" : gmInstance = new GmMembresInstance(); break;
-    }
-    return gmInstance;
+/**
+ * Get current GmInstance
+ */
+function GetActiveGmInstance(){
+    let entityNameRange = SpreadsheetApp.getActiveSheet().getRange(1,2);
+    let entityName = entityNameRange.getValue();
+    let filterId1 = SpreadsheetApp.getActiveSheet().getRange(2,2).getValue();
+    return CreateGmInstance(entityName,filterId1)
 }
 
 // Actions 
 
-
-function InitViewManager(managerReference){
-  setCurrentManager(managerReference);
-  GetGmInstance().initManager();
-  SpreadsheetApp.getActive().getSheetByName("Gestionnaire").activate();
-
-}
-
 function RefreshDataGmView(){
-  GetGmInstance().refreshData();
+  GetActiveGmInstance().reload();
+
+
 }
 
 function GmManagerDelete(){
-  GetGmInstance().deleteRow();
+  GetActiveGmInstance().deleteRow();
 }
 
 // [question : est ce que une fonction dans google app ascript doit commencer par une lettre maguscule ou miniscule]
 function editGmView(){
-  GetGmInstance().editRow();
+  GetActiveGmInstance().editRow();
 }
 
 function AddGmView(){
-  GetGmInstance().addRow();
+  GetActiveGmInstance().addRow();
 }
 
 /**
  * Trouver l'entity à créer ou à modifier
  */
 function getCreateOrEditEntityGmView(){
-  let entityData = GetGmInstance().getCreateOrEditEntityGmView();
+  let entityData = GetActiveGmInstance().getCreateOrEditEntityGmView();
 
   // Vous ne pouvez pas transmettre les valeurs Date au Service HTML
   // voir la documentation : https://developers.google.com/apps-script/guides/html/communication?hl=fr#parameters_and_return_values
@@ -87,7 +97,7 @@ function SaveEntityRowGmView(entityRow){
   // try{
     AfficherToast("Enregsitrement de l'entity : " + Object.values(entityRow));
     console.log(entityRow);
-    GetGmInstance().saveEntityRow(entityRow);
+    GetActiveGmInstance().saveEntityRow(entityRow);
     RefreshDataGmView()
   // }catch(error){
   //   AfficherToast(error);

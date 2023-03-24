@@ -4,22 +4,15 @@ class GmMembresInstance extends GmBaseInstance{
   constructor() {
     super()
     this.tableName = "MembresTable";
-    this.sheetName = "Gestionnaire";
     this.entityName = "Membre";
     this.Bl = new MembresBL();
     this.titre = "Gestion des membres";
+    this.sheetName = this.titre;
     this.columnsNames = ["Id","Nom","Prenom","Email"];
     this.columnsTitles = ["Id","Nom","Prénom","E-mail"];
-    this.entityForm = "MembreForm";
+    this.entityForm = "5.Views/MembreForm";
+
+    this.initSheet();
   }
-
-
-
-}
-
-function TestMembresGmanagerInstance(){
-
-  let membresGmanagerInstance = new MembresGmanagerInstance();
-  membresGmanagerInstance.deleteRow();
 
 }

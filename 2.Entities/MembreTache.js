@@ -4,11 +4,15 @@ class MembreTache extends Entity{
     super(object);
     if(!object){
       this.Id = ""
-      this.IdTache = ""
+      this.IdProjet = ""
+      this.IdQuestion = ""
       this.IdMembre = ""
 
+      this.Tache = "";
+      this.References = "";
+      this.Remarques = "";
+      this.RemarquesChefProjet = "";
       
-      this.Remarque = "";
       this.Livrable = "";
       this.Etat = "";
       this.DateDebut = "";
@@ -16,26 +20,33 @@ class MembreTache extends Entity{
 
       this.DateCreation = new Date();
       this.DateModification = new Date();
-      this.TacheToString = "";
+
       this.MembreToString = "";
+      this.QuestionToString = "";
       this.PhaseToString = "";
       this.ProjetToString = "";
       this.ToString = "";
     }else{
 
       this.Id = object.Id;
-      this.IdTache = object.IdTache;
+      this.IdTIdProjetache = object.IdProjet;
+      this.IdQuestion = object.IdQuestion;
       this.IdMembre = object.IdMembre;
 
 
-      this.Remarque = object.Remarque;
+      this.Tache = object.Tache;
+      this.References = object.References;
+      this.Remarques = object.Remarques;
+      this.RemarquesChefProjet = object.RemarquesChefProjet;
+
       this.Livrable = object.Livrable;
       this.Etat = object.Etat;
       this.DateDebut = object.DateDebut;
       this.DateFin = object.DateFin;
 
-      this.TacheToString = object.TacheToString;
+
       this.MembreToString = object.MembreToString;
+      this.QuestionToString = object.QuestionToString;
       this.PhaseToString = object.PhaseToString;
       this.ProjetToString = object.ProjetToString;
       this.ToString = object.ToString;

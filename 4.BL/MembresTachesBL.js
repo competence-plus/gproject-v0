@@ -6,4 +6,9 @@ class MembresTachesBL extends BaseBL{
     this.Entity = MembreTache;
   }
 
+  // findAllByIdProjet
+  findAllByIdProjet(idProjet){
+      let data = this.Dao.findAllByIdProjet(idProjet);
+      return data;
+  }
 }
