@@ -7,7 +7,7 @@
   </head>
   <body>
 
-<div class="container">
+<div class="container" style="width: 900px; height: 500px;">
     <div class="section">
     <div class="row">
       <div class="col s12">
@@ -17,13 +17,51 @@
     <div class="row">
       <form class="col s12">
         <input type="hidden" name="Id" id="Id" value="">
-        <div class="row">
 
-          <div class="input-field col s12">
+        <div class="row">
+          <div class="input-field col s6">
             <input id="Tache" type="text" class="validate" >
             <label for="Tache">Tâche</label>
           </div>
           <div class="input-field col s6">
+            <select id="IdQuestion" name="IdQuestion">
+              <option value="1">Question 1</option>
+              <option selected value="2">Question 2</option>
+            </select>
+            <label for="Etat">Question</label>
+          </div>
+          <div class="input-field col s4">
+            <select id="IdPhase" name="IdPhase" class="validate">
+              <option value="1">Empathie</option>
+              <option value="2">Analyse technique</option>
+              <option value="3">Prototype</option>
+            </select>
+            <label for="PhaseToString">PhaseToString</label>
+          </div>
+          
+          <div class="input-field col s4">
+            <input id="ProjetToString" type="text" disabled class="validate" >
+            <label for="ProjetToString">Projet</label>
+          </div>
+          <div class="input-field col s4">
+            <select id="IdMembre" name="IdMembre" class="validate">
+              <option value="1">Madani Ali</option>
+              <option value="2">Chami mouad</option>
+              <option value="3">Madani Fatima</option>
+            </select>
+            <label for="IdMembre">Membre</label>
+          </div>
+
+         
+         
+          
+
+        </div>
+
+
+        <div class="row">
+          
+          <div class="input-field col s4">
             <select id="Etat" name="Etat">
               <option value="A faire">A faire</option>
               <option value="En cours">En cours</option>
@@ -34,37 +72,41 @@
             </select>
             <label for="Etat">Etat</label>
           </div>
-          <div class="input-field col s6">
-            <input id="ProjetToString" type="text" disabled class="validate" >
-            <label for="ProjetToString">Projet</label>
+          <div class="input-field col s4">
+            <input id="DateDebut" type="text" class="datepicker validate" >
+           
+
+            <label for="DateDebut">Date début</label>
+          </div>
+          <div class="input-field col s4">
+            <input id="DateFin" type="text" class="datepicker validate" >
+            <label for="DateFin">Date début</label>
           </div>
 
-          PhaseToString
-          IdMembre
-          References
-          Remarques
-          <div class="input-field col s12">
-            <select id="IdQuestion" name="IdQuestion">
-              <option value="1">Question 1</option>
-              <option selected value="2">Question 2</option>
-            </select>
-            <label for="Etat">Question</label>
-          </div>
-
-          <div class="input-field col s12">
-            <input id="Remarque" type="text" class="validate">
-            <label for="Remarque">Remarque</label>
-          </div>
-
-
-          <div class="input-field col s12">
-            <input id="Livrable" type="text" class="validate">
-            <label for="Livrable">Livrable</label>
-          </div>
-
-          
         </div>
-        
+        <div class="row">
+
+
+
+
+<div class="input-field col s6">
+  <input id="Livrable" type="text" class="validate">
+  <label for="Livrable">Livrable</label>
+</div>
+
+<div class="input-field col s6">
+  <input id="References" type="text" class="validate" >
+  <label for="References">References</label>
+</div>
+
+<div class="input-field col s12">
+
+  <textarea id="Remarques" type="text" class="materialize-textarea validate" ></textarea>
+  <label for="Remarques">Remarques</label>
+</div>
+       
+
+  
       </form>
     </div>  
         <div class="row">
@@ -85,12 +127,16 @@
   $(document).ready(function () {
 
     $('select').formSelect();
+    $('.datepicker').datepicker();
+
+   
+
 
     let data = {
       Id : 1,
       ProjetToString: "Gestion des briefs projet",
       IdQuestion: 2,
-      PhaseToString: "Empathie",
+      IdPhase: 2,
       IdMembre: 3,
       Tache: "Empathie avec Mr Madani Ali",
       References: "https://www.google.com/",
@@ -98,8 +144,8 @@
       RemarquesChefProjet: "Vous avez oublier la date de fin",
       Livrable: "https://github.com/",
       Etat: "En cours",
-      DateDebut: "24/03/2023",
-      DateFin: "24/03/2023",
+      DateDebut:  new Date("24/03/2023"),
+      DateFin: "25/03/2023",
     }
 
     let entity =  JSON.parse(JSON.stringify(data));
@@ -110,6 +156,20 @@
 
     $('select').formSelect();
     
+    
+    // set Datedebut
+    var datepicker = document.getElementById('DateDebut');
+    var instance = M.Datepicker.getInstance(datepicker);
+    instance.setDate(new Date("12/12/22"));
+    instance.setInputValue();
+
+    // set DateFin
+    var datepicker = document.getElementById('DateFin');
+    var instance = M.Datepicker.getInstance(datepicker);
+    instance.setDate(new Date("12/12/22"));
+    instance.setInputValue();
+
+
     // $("#DateNaissance").val(new Date(entity.DateNaissance).toLocaleDateString('fr-FR'));
     M.updateTextFields();
   });
