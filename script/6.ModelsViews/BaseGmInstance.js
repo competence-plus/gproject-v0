@@ -178,10 +178,10 @@ class GmBaseInstance {
    * Afficher le menu latéral
    */
   showMenuSidebar(){
-        var html = HtmlService.createHtmlOutputFromFile('5.Views/menuGestionVilles.html')
-      .setTitle('Gestion des villes');
-      SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
-      .showSidebar(html);
+      //   var html = HtmlService.createHtmlOutputFromFile('5.Views/menuGestionVilles.html')
+      // .setTitle('Gestion des villes');
+      // SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
+      // .showSidebar(html);
   }
 
 

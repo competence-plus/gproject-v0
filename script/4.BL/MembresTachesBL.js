@@ -11,4 +11,9 @@ class MembresTachesBL extends BaseBL{
       let data = this.Dao.findAllByIdProjet(idProjet);
       return data;
   }
+  saveEntityRow(entity){
+    entity.DateDebut = new Date();
+    super.saveEntityRow(entity);
+
+  }
 }

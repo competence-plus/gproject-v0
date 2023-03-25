@@ -38,9 +38,13 @@ class GmMembresTachesInstance extends GmBaseInstance{
   getEntityFormTemplate(entity){
     let questions = new QuestionsBL().findByIdProjet(this.idProjet);
     let phasesProjet = new PhasesProjetsBL().findByIdProjet(this.idProjet);
+    let membres = new MembresBL().findAll();
+
     let template = super.getEntityFormTemplate(entity);
     template.questions = JSON.stringify(questions);
     template.phasesProjet = JSON.stringify(phasesProjet);
+    template.membres = JSON.stringify(membres);
+    template.idProjet = this.idProjet;
     return template;
   }
 

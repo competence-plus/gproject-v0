@@ -12,7 +12,7 @@
 
 
 <div class="row">
-<form class="col s12">
+<form class="col s12" onsubmit="return false">
 <input type="hidden" name="Id" id="Id" value="">
 
 <div class="row">
@@ -37,9 +37,6 @@
   </div>
   <div class="input-field col s4">
     <select id="IdMembre" name="IdMembre" class="validate">
-      <option value="1">Madani Ali</option>
-      <option value="2">Chami mouad</option>
-      <option value="3">Madani Fatima</option>
     </select>
     <label for="IdMembre">Membre</label>
   </div>
@@ -97,19 +94,20 @@
 <?!= include('5.Views/libs/materialize.min.js'); ?>
 
 <script>
+    var idProjet = parseInt(<?= idProjet ?>);
+    var entity =  JSON.parse("<?= jsonEntity ?>");
+    var questions =  JSON.parse("<?= questions ?>");
+    var phasesProjet =  JSON.parse("<?= phasesProjet ?>");
+    var membres =  JSON.parse("<?= membres ?>");
+    
 
   $(document).ready(function () {
 
     // Parse JSON Data 
-    let entity =  JSON.parse("<?= jsonEntity ?>");
-    let questions =  JSON.parse("<?= questions ?>");
-    let phasesProjet =  JSON.parse("<?= phasesProjet ?>");
-    
-
-
     console.log( entity);
     console.log(questions);
     console.log(phasesProjet);
+    console.log(membres);
 
 
     // Update Select Tags : 
@@ -126,6 +124,12 @@
                           .attr("value", phaseProjet.Id)
                           .text(phaseProjet.Nom)); 
     });
+    membres.forEach(membre=> {
+      $('#IdMembre')
+              .append($("<option></option>")
+                          .attr("value", membre.Id)
+                          .text(membre.Nom + " " + membre.Prenom)); 
+    });
      
 
 
@@ -140,16 +144,22 @@
     });
 
     // set Datedebut
-    var datepicker = document.getElementById('DateDebut');
-    var instance = M.Datepicker.getInstance(datepicker);
-    instance.setDate(new Date("12/12/22"));
-    instance.setInputValue();
+    if(entity.DateDebut != ""){
+      var datepicker = document.getElementById('DateDebut');
+      var instance = M.Datepicker.getInstance(datepicker);
+      instance.setDate(entity.DateDebut);
+      instance.setInputValue();
+    }
+
 
     // set DateFin
-    var datepicker = document.getElementById('DateFin');
-    var instance = M.Datepicker.getInstance(datepicker);
-    instance.setDate(new Date("12/12/22"));
-    instance.setInputValue();
+    if(entity.DateFin != ""){
+      var datepicker = document.getElementById('DateFin');
+      var instance = M.Datepicker.getInstance(datepicker);
+      instance.setDate(entity.DateFin);
+      instance.setInputValue();
+    }
+
 
     // Problème de DateTime
     // $("#DateNaissance").val(new Date(entity.DateNaissance).toLocaleDateString('fr-FR'));
@@ -161,18 +171,32 @@
 
   function save()
   { 
-    let entity = {};
-    entity.Id =  parseInt ($("#Id").val())
-    entity.Remarque = $("#Remarque").val();
-    entity.Livrable = $("#Livrable").val();
-    entity.Etat = $("#Etat").val();
-   
+    let updatedEntity = {};
+
+  
+ 
+    let entries = Object.entries(entity);
+    entries.forEach(value => {
+        let val = $("#" + value[0]).val()
+        updatedEntity[value[0]] = $("#" + value[0]).val();
+    });
+
+
+    updatedEntity.Id =  parseInt (updatedEntity.Id);
+    updatedEntity.IdPhaseProjet =  parseInt (updatedEntity.IdPhaseProjet);
+    updatedEntity.IdQuestion =  parseInt (updatedEntity.IdQuestion);
+    updatedEntity.IdMembre =  parseInt (updatedEntity.IdMembre);
+    updatedEntity.IdProjet =  parseInt (idProjet);
+
+    // problème de date
+    updatedEntity.DateDebut = entity.DateDebut;
 
 
     // entity.DateNaissance = new Date( $("#DateNaissance").val());
-    console.log(entity);
-    google.script.run.SaveEntityRowGmView(entity)
+    console.log(updatedEntity);
+    google.script.run.SaveEntityRowGmView(updatedEntity)
     google.script.host.close();
+ 
 }
 </script>
 </body>
