@@ -6,6 +6,7 @@ class MembreTache extends Entity{
       this.Id = ""
       this.IdProjet = ""
       this.IdQuestion = ""
+      this.IdPhaseProjet = ""
       this.IdMembre = ""
 
       this.Tache = "";
@@ -29,8 +30,9 @@ class MembreTache extends Entity{
     }else{
 
       this.Id = object.Id;
-      this.IdTIdProjetache = object.IdProjet;
+      this.IdProjet = object.IdProjet;
       this.IdQuestion = object.IdQuestion;
+      this.IdPhaseProjet = object.IdPhaseProjet;
       this.IdMembre = object.IdMembre;
 
 
@@ -57,7 +59,7 @@ class MembreTache extends Entity{
   }
 
   toString() {
-    return this.TacheToString;
+    return this.Tache;
   }
  
 

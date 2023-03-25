@@ -6,8 +6,9 @@
 
 
 function testGmView(){
+  editGmView()
   // RefreshDataGmView();
-  AddGmView()
+  // AddGmView()
   // GetActiveGmInstance();
   // InitViewManager("MembreTache", 1)
 

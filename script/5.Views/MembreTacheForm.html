@@ -9,115 +9,88 @@
 
 
 <div class="container" >
-    <div class="section">
-    <div class="row">
-      <div class="col s12">
-        <h5>Modifier une tâche</h5>
-      </div>
-    </div>
-    <div class="row">
-      <form class="col s12">
-        <input type="hidden" name="Id" id="Id" value="">
-
-        <div class="row">
-          <div class="input-field col s6">
-            <input id="Tache" type="text" class="validate" >
-            <label for="Tache">Tâche</label>
-          </div>
-          <div class="input-field col s6">
-            <select id="IdQuestion" name="IdQuestion">
-              <option value="1">Question 1</option>
-              <option selected value="2">Question 2</option>
-            </select>
-            <label for="Etat">Question</label>
-          </div>
-          <div class="input-field col s4">
-            <select id="IdPhase" name="IdPhase" class="validate">
-              <option value="1">Empathie</option>
-              <option value="2">Analyse technique</option>
-              <option value="3">Prototype</option>
-            </select>
-            <label for="PhaseToString">PhaseToString</label>
-          </div>
-          
-          <div class="input-field col s4">
-            <input id="ProjetToString" type="text" disabled class="validate" >
-            <label for="ProjetToString">Projet</label>
-          </div>
-          <div class="input-field col s4">
-            <select id="IdMembre" name="IdMembre" class="validate">
-              <option value="1">Madani Ali</option>
-              <option value="2">Chami mouad</option>
-              <option value="3">Madani Fatima</option>
-            </select>
-            <label for="IdMembre">Membre</label>
-          </div>
-
-         
-         
-          
-
-        </div>
 
 
-        <div class="row">
-          
-          <div class="input-field col s4">
-            <select id="Etat" name="Etat">
-              <option value="A faire">A faire</option>
-              <option value="En cours">En cours</option>
-              <option value="En validation">En validation</option>
-              <option value="En confirmation">En confirmation</option>
-              <option value="En pause">En pause</option>
-              <option value="Terminée">Terminée</option>
-            </select>
-            <label for="Etat">Etat</label>
-          </div>
-          <div class="input-field col s4">
-            <input id="DateDebut" type="text" class="datepicker validate" >
-           
+<div class="row">
+<form class="col s12">
+<input type="hidden" name="Id" id="Id" value="">
 
-            <label for="DateDebut">Date début</label>
-          </div>
-          <div class="input-field col s4">
-            <input id="DateFin" type="text" class="datepicker validate" >
-            <label for="DateFin">Date début</label>
-          </div>
+<div class="row">
+  <div class="input-field col s6">
+    <input id="Tache" type="text" class="validate" >
+    <label for="Tache">Tâche</label>
+  </div>
+  <div class="input-field col s6">
+    <select id="IdQuestion" name="IdQuestion">
+    </select>
+    <label for="Etat">Question</label>
+  </div>
+  <div class="input-field col s4">
+    <select id="IdPhaseProjet" name="IdPhaseProjet" class="validate">
+    </select>
+    <label for="PhaseToString">PhaseToString</label>
+  </div>
+  
+  <div class="input-field col s4">
+    <input id="ProjetToString" type="text" disabled class="validate" >
+    <label for="ProjetToString">Projet</label>
+  </div>
+  <div class="input-field col s4">
+    <select id="IdMembre" name="IdMembre" class="validate">
+      <option value="1">Madani Ali</option>
+      <option value="2">Chami mouad</option>
+      <option value="3">Madani Fatima</option>
+    </select>
+    <label for="IdMembre">Membre</label>
+  </div>
 
-        </div>
-        <div class="row">
+  
+  <div class="input-field col s4">
+    <select id="Etat" name="Etat">
+      <option value="A faire">A faire</option>
+      <option value="En cours">En cours</option>
+      <option value="En validation">En validation</option>
+      <option value="En confirmation">En confirmation</option>
+      <option value="En pause">En pause</option>
+      <option value="Terminée">Terminée</option>
+    </select>
+    <label for="Etat">Etat</label>
+  </div>
+  <div class="input-field col s4">
+    <input id="DateDebut" type="text" class="datepicker validate" >
+    
 
+    <label for="DateDebut">Date début</label>
+  </div>
+  <div class="input-field col s4">
+    <input id="DateFin" type="text" class="datepicker validate" >
+    <label for="DateFin">Date début</label>
+  </div>
 
-
-
-<div class="input-field col s6">
+  <div class="input-field col s6">
   <input id="Livrable" type="text" class="validate">
   <label for="Livrable">Livrable</label>
-</div>
+  </div>
 
-<div class="input-field col s6">
+  <div class="input-field col s6">
   <input id="References" type="text" class="validate" >
   <label for="References">References</label>
-</div>
+  </div>
 
-<div class="input-field col s12">
+  <div class="input-field col s12">
 
   <textarea id="Remarques" type="text" class="materialize-textarea validate" ></textarea>
   <label for="Remarques">Remarques</label>
-</div>
-       
+  </div>
 
-  
-      </form>
-    </div>  
-        <div class="row">
-              <div class="col s12">
-                  <button class="btn waves-effect waves-light" onclick="save()"  name="action">Enregistrer
-                      <i class="material-icons right">send</i>
-                  </button>
-              </div>
-        </div> 
-    </div>
+  <div class="col s12">
+      <button class="btn waves-effect waves-light" onclick="save()"  name="action">Enregistrer
+          <i class="material-icons right">send</i>
+      </button>
+  </div>
+</div>
+</form>
+</div>  
 </div>
      
 <?!= include('5.Views/libs/jquery-3.2.1'); ?>
@@ -127,20 +100,46 @@
 
   $(document).ready(function () {
 
+    // Parse JSON Data 
+    let entity =  JSON.parse("<?= jsonEntity ?>");
+    let questions =  JSON.parse("<?= questions ?>");
+    let phasesProjet =  JSON.parse("<?= phasesProjet ?>");
+    
+
+
+    console.log( entity);
+    console.log(questions);
+    console.log(phasesProjet);
+
+
+    // Update Select Tags : 
+    questions.forEach(question=> {
+      $('#IdQuestion')
+              .append($("<option></option>")
+                          .attr("value", question.Id)
+                          .text(question.Question)); 
+    });
+
+    phasesProjet.forEach(phaseProjet=> {
+      $('#IdPhaseProjet')
+              .append($("<option></option>")
+                          .attr("value", phaseProjet.Id)
+                          .text(phaseProjet.Nom)); 
+    });
+     
+
+
+    // Init components
     $('select').formSelect();
     $('.datepicker').datepicker();
 
-    let entity =  JSON.parse("<?= jsonEntity ?>");
-    console.log("Form : " + entity);
-   let values = Object.entries(entity).forEach(value => {
+    
+    // Afficher Entity dans l'interface
+    let values = Object.entries(entity).forEach(value => {
       $("#" + value[0]).val( value[1]);
     });
 
-
-    $('select').formSelect();
-    
-
-        // set Datedebut
+    // set Datedebut
     var datepicker = document.getElementById('DateDebut');
     var instance = M.Datepicker.getInstance(datepicker);
     instance.setDate(new Date("12/12/22"));
@@ -152,8 +151,11 @@
     instance.setDate(new Date("12/12/22"));
     instance.setInputValue();
 
-
+    // Problème de DateTime
     // $("#DateNaissance").val(new Date(entity.DateNaissance).toLocaleDateString('fr-FR'));
+    
+    // Update Materialize component 
+    $('select').formSelect();
     M.updateTextFields();
   });
 

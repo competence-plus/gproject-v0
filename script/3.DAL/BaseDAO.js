@@ -17,13 +17,18 @@ class BaseDAO {
       });
   }
 
+  convertDataRowsToListObjects(rowsObjects){
+    let listObjects  = rowsObjects.map( rowObject => {
+          return new this.Entity(rowObject)
+        });
+    return listObjects;
+  }
+
   // Retourne tous les ville
   findAll(){
     var data;
-    let rowsObjects = this.table.all();
-    data = rowsObjects.map( rowObject => {
-       return new this.Entity(rowObject)
-    })
+    let dataRows = this.table.all();
+    data = this.convertDataRowsToListObjects(dataRows);
     return data;
   }
 

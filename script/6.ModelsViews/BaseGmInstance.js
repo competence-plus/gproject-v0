@@ -24,8 +24,18 @@ class GmBaseInstance {
     this.titreGestionnaireRange = undefined;
     this.idEntityFilter1Range = undefined;
 
+    // Modal 
+    this.formWidth =  950;
+    this.formHeight = 600;
+
   }
 
+  // Initialisation de l'interface 
+
+
+  /**
+   * Init colonnes et données
+   */
   reload(){
       
       let titreRange =  this.titreGestionnaireRange;
@@ -65,6 +75,9 @@ class GmBaseInstance {
 
   }
 
+  /**
+   * Activation de l'interface 
+   */
   activate(){
     this.sheet.activate();
   }
@@ -95,6 +108,10 @@ class GmBaseInstance {
 
   }
 
+
+  /**
+   * Clear Data
+   */
   clearData(){
     let idrow = this.idNameColonneRange.getRow();
     let idcolumns = this.idNameColonneRange.getColumn();
@@ -104,9 +121,9 @@ class GmBaseInstance {
     rangeDataWithColumns.clearContent();
   }
 
- /*
-    Initialisation des clonnes
-  */ 
+  /**
+   * Init Colonnes
+   */
   initColonnes(){
     let columnsNumber = this.columnsNames.length;
     let idNameColonneRange =  this.sheet.getRange(6,2);
@@ -116,13 +133,8 @@ class GmBaseInstance {
     else columnsNamesRange.setValues([this.columnsNames]);
   }
 
-
-  refreshData(){
-    let data = this.Bl.findAll();
-    this.showData(data);
-  }
-
-
+ 
+// Private actions
 
 /**
  * Afficher un tableau des valeurs dans l'interface
@@ -159,9 +171,12 @@ class GmBaseInstance {
     let rangeData = this.sheet.getRange(idrow+1,idcolumns,numRow,numColumns );
     rangeData.setValues(values)
   }
- 
 
-  
+
+
+  /**
+   * Afficher le menu latéral
+   */
   showMenuSidebar(){
         var html = HtmlService.createHtmlOutputFromFile('5.Views/menuGestionVilles.html')
       .setTitle('Gestion des villes');
@@ -184,12 +199,77 @@ class GmBaseInstance {
 
   }
 
+  /**
+   * clearSelectedIds
+   */
   clearSelectedIds(){
     let checkBoxRange = this.sheet.getRange(this.checkBoxIdsRange.getRow(),this.checkBoxIdsRange.getColumn(),this.checkBoxIdsRange.getNumRows());
     checkBoxRange.clearContent();
   }
 
-    // Supprimer une ligne 
+  /**
+   * Create Template for Form to be evaluated
+   * @param entity The value of Entity to be updated or added
+   */
+  getEntityFormTemplate(entity){
+    let template = HtmlService.createTemplateFromFile(this.entityForm);
+    template.jsonEntity = JSON.stringify(entity);
+    return template;
+  }
+
+  /**
+   * Afficher la page de modofication dans ShowDialog
+   * @param title le tittre de fenêtre modal
+   */
+  showEntityForm(entity,title){
+
+    if(!this.entityForm) throw( new Error("Le formulaire de l'entité " + this.entityName + " n'est pas définie"))
+    let template = this.getEntityFormTemplate(entity);
+    var form = HtmlService.createHtmlOutput(template.evaluate());
+    form.setWidth(this.formWidth);
+    form.setHeight(this.formHeight);
+
+    SpreadsheetApp.getUi().showModalDialog(form,title);
+  }
+
+
+
+// Public actions : CRUD
+
+  /**
+   * refreshData
+   */
+  refreshData(){
+    let data = this.Bl.findAll();
+    this.showData(data);
+  }
+
+
+  /**
+   * Ajouter une nouvelle ligne
+   */
+  addRow(){
+    let entityData = this.Bl.newEntity();
+    let modalTitle = "Modification : " + entityData;
+    this.showEntityForm(entityData,modalTitle);
+  }
+
+  /**
+   * Editer la première ligne selectionnée
+   */
+  editRow(){
+
+    let ids = this.getSelectedIds()
+    if(ids.length == 0 ) throw("Vous devez selectionner une ligne pour le mettre à jour");
+    let id = ids[0];
+    let entityData = this.Bl.findById(id);
+    let modalTitle = "Modification : " + entityData;
+    this.showEntityForm(entityData,modalTitle);
+  }
+
+  /** 
+   * Supprimer une ligne 
+  */
   deleteRow(){
     let ids = this.getSelectedIds();
     if(ids.length > 1) throw("Vous devez supprimer ligne par ligne");
@@ -202,48 +282,9 @@ class GmBaseInstance {
 
   //
 
-/**
- * Editer la première ligne selectionnée
- */
-  editRow(){
-
-    let ids = this.getSelectedIds()
-    if(ids.length == 0 ) throw("Vous devez selectionner une ligne pour le mettre à jour");
-    let id = ids[0];
-    let entityData = this.Bl.findById(id);
-    this.showEditForm(entityData);
-  }
-
-
-  addRow(){
-    let entityData = this.Bl.newEntity();
-    this.showEditForm(entityData);
-  }
   /**
-   * Afficher la page de modofication dans ShowDialog
+   * Action de button enregistrer de la forme : Add et Update
    */
-  showEditForm(entity){
-
-    if(!this.entityForm) throw( new Error("Le formulaire de l'entité " + this.entityName + " n'est pas définie"))
-    var template = HtmlService.createTemplateFromFile(this.entityForm);
-    template.title = "Modification de la ville : " + entity;
-    template.jsonEntity = JSON.stringify(entity);
-    var form = HtmlService.createHtmlOutput(template.evaluate());
-    form.setWidth(900);
-    form.setHeight(500);
-
-    SpreadsheetApp.getUi().showModalDialog(form,"Modifier la vile : " + entity);
-  }
-
-
-  getCreateOrEditEntityGmView(){
-    let ids = this.getSelectedIds()
-    if(ids.length == 0 ) throw("Vous devez selectionner une ligne pour le mettre à jour");
-    let id = ids[0];
-    let entityData = this.Bl.findById(id);
-    return entityData;
-  }
-
   saveEntityRow(entityRow){
 
       this.Bl.saveEntityRow(entityRow);
@@ -253,15 +294,13 @@ class GmBaseInstance {
 
 
 
-
-
-
-
-
-
-
-
-
+  // getCreateOrEditEntityGmView(){
+  //   let ids = this.getSelectedIds()
+  //   if(ids.length == 0 ) throw("Vous devez selectionner une ligne pour le mettre à jour");
+  //   let id = ids[0];
+  //   let entityData = this.Bl.findById(id);
+  //   return entityData;
+  // }
 
 
 }

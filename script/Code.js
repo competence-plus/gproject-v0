@@ -1,6 +1,7 @@
  function debug(){
+     editGmView()
   //  CreateGmInstance("Membre",undefined)
-   RefreshDataGmView();
+  //  RefreshDataGmView();
   //  CreateGmInstance("MembreTache",2)
   //  SaveEntityRowGmView({Id:57,Etat:"En validation2"})
  }
